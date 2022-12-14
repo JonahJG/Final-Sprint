@@ -80,46 +80,56 @@ while True:
 
     def DriverFinList():
 
-        # Print out top of report
+            while True:
+            # Print out top of report
 
-        Today = datetime.datetime.now()
-        print()
-        print("HAB TAXI SERVICES")
-        print(f"FINANCIAL LISTING FROM 2022-12-01 to {FV.FDateS(Today)} ")
-        print()
-        print("TRANSACTION  TRANSACTION   TRANSACTION      DRIVER     REVENUE      HST   TOTAL       TIPS ")
-        print("    ID          DATE       DESCRIPTION      NUMBER                        REVENUE")
-        print("===========================================================================================")
-
-        # Set counter to 0
-        TransCtr = 0
-
-        # Open Revenues.dat to read
-
-        f = open("Revenues.dat", "r")
-
-        for CustDataLine in f:
-            CustLine = CustDataLine.split(",")
-            TransID = int(CustLine[0].strip())
-            TransDate = CustLine[1].strip()
-            TransDate = datetime.datetime.strptime(TransDate, "%Y-%m-%d")
-            TransDescrip = CustLine[2].strip()
-            DriverNo = int(CustLine[3].strip())
-            TransAmt = float(CustLine[4].strip())
-            HST = float(CustLine[5].strip())
-            Total = float(CustLine[6].strip())
-            Tips = float(CustLine[-1].strip())
-
-            TransDescripDsp = "{:.16}".format(TransDescrip)
-            print(
-                f"   {TransID:>4d}       {FV.FDateS(TransDate)}   {TransDescripDsp:<16s}  {DriverNo:<4d}    {FV.FDollar2(TransAmt):>9s}  {FV.FDollar2(HST):>9s} {FV.FDollar2(Total):>7s} {FV.FDollar2(Tips):>9s}")
+            StartDate = date(2022, 12, 0o1)
+            Today = datetime.datetime.now()
             print()
-            TransCtr += 1
+            print("HAB TAXI SERVICES")
+            print(f"FINANCIAL LISTING FROM {StartDate} to {FV.FDateS(Today)} ")
+            print()
+            print("TRANSACTION  TRANSACTION   TRANSACTION      DRIVER     REVENUE      HST   TOTAL       TIPS ")
+            print("    ID          DATE       DESCRIPTION      NUMBER                        REVENUE")
+            print("===========================================================================================")
 
-        f.close()
-        print("===========================================================================================")
-        print(f"NO. TRANSACTIONS: {TransCtr:>3d}")
+            # Set counter to 0
+            TransCtr = 0
 
+            # Open Revenues.dat to read
+
+            f = open("Revenues.dat", "r")
+
+            for CustDataLine in f:
+                CustLine = CustDataLine.split(",")
+                TransDate = CustLine[1].strip()
+                TransDateP = datetime.datetime.strptime(TransDate, "%Y-%m-%d")
+
+                if TransDateP.month == 12:
+                    TransID = int(CustLine[0].strip())
+                    TransDate = datetime.datetime.strptime(TransDate, "%Y-%m-%d")
+                    TransDescrip = CustLine[2].strip()
+                    DriverNo = int(CustLine[3].strip())
+                    TransAmt = float(CustLine[4].strip())
+                    HST = float(CustLine[5].strip())
+                    Total = float(CustLine[6].strip())
+                    Tips = float(CustLine[-1].strip())
+
+                    TransDescripDsp = "{:.15}".format(TransDescrip)
+                    print(
+                        f"   {TransID:>4d}       {FV.FDateS(TransDate)}   {TransDescripDsp:<15s}  {DriverNo:<4d}    {FV.FDollar2(TransAmt):>9s}  {FV.FDollar2(HST):>9s} {FV.FDollar2(Total):>7s} {FV.FDollar2(Tips):>9s}")
+                    TransCtr += 1
+
+            f.close()
+            print("===========================================================================================")
+            print(f"NO. TRANSACTIONS: {TransCtr:>3d}")
+            print()
+
+            Cont = input("ENTER 'END' TO QUIT: ").upper()
+            if Cont == "END":
+                break
+            else:
+                print("Please enter 'END' to quit.")
 
     def TBD():
 

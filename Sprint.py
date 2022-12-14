@@ -16,6 +16,25 @@ WEEK_RENT_FEE = float(f.readline())
 HST_RATE = float(f.readline())
 f.close()
 
+# Automatic stand fees set-up
+
+if Today.day == 1:
+
+    FEE_DATE = Today
+    MONTHLY_STAND_FEES = "Monthly Stand Fees"
+
+    f = open("Revenues.dat", "w")
+
+    f.write("{}\n".format(str(NEXT_TRANS_NO)))
+    f.write("{}\n".format(FV.FDateS(FEE_DATE)))
+    f.write("{}\n".format(str(MONTHLY_STAND_FEES)))
+    f.write("{}\n".format(str(NEXT_DRIVER_NO)))
+    f.write("{}\n".format(str(MON_STAND_FEE)))
+    f.write("{}\n".format(str(DAILY_RENT_FEE)))
+    f.write("{}\n".format(str(WEEK_RENT_FEE)))
+
+    f.close()
+
 # Menu set-up
 
 while True:
@@ -61,7 +80,46 @@ while True:
 
     def DriverFinList():
 
-        pass
+        # Print out top of report
+
+        Today = datetime.datetime.now()
+        print()
+        print("HAB TAXI SERVICES")
+        print(f"FINANCIAL LISTING FROM 2022-12-01 to {FV.FDateS(Today)} ")
+        print()
+        print("TRANSACTION  TRANSACTION   TRANSACTION      DRIVER     REVENUE      HST   TOTAL       TIPS ")
+        print("    ID          DATE       DESCRIPTION      NUMBER                        REVENUE")
+        print("===========================================================================================")
+
+        # Set counter to 0
+        TransCtr = 0
+
+        # Open Revenues.dat to read
+
+        f = open("Revenues.dat", "r")
+
+        for CustDataLine in f:
+            CustLine = CustDataLine.split(",")
+            TransID = int(CustLine[0].strip())
+            TransDate = CustLine[1].strip()
+            TransDate = datetime.datetime.strptime(TransDate, "%Y-%m-%d")
+            TransDescrip = CustLine[2].strip()
+            DriverNo = int(CustLine[3].strip())
+            TransAmt = float(CustLine[4].strip())
+            HST = float(CustLine[5].strip())
+            Total = float(CustLine[6].strip())
+            Tips = float(CustLine[-1].strip())
+
+            TransDescripDsp = "{:.16}".format(TransDescrip)
+            print(
+                f"   {TransID:>4d}       {FV.FDateS(TransDate)}   {TransDescripDsp:<16s}  {DriverNo:<4d}    {FV.FDollar2(TransAmt):>9s}  {FV.FDollar2(HST):>9s} {FV.FDollar2(Total):>7s} {FV.FDollar2(Tips):>9s}")
+            print()
+            TransCtr += 1
+
+        f.close()
+        print("===========================================================================================")
+        print(f"NO. TRANSACTIONS: {TransCtr:>3d}")
+
 
     def TBD():
 
@@ -103,6 +161,7 @@ while True:
 
     elif Choice == 9:
         break
+
 
 
 

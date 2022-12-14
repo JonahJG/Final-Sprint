@@ -3,6 +3,7 @@
 
 import FormatValues as FV
 import datetime
+from datetime import date
 Today = datetime.datetime.now()
 
 # Open and read values from Defaults.dat
@@ -76,24 +77,25 @@ while True:
 
     def ProfList():
 
-        pass
+        while True:
 
-    def DriverFinList():
+            # User input
 
-            while True:
+            Driver = input("Enter the driver number (####): ")
+
             # Print out top of report
 
             StartDate = date(2022, 12, 0o1)
             Today = datetime.datetime.now()
             print()
             print("HAB TAXI SERVICES")
-            print(f"FINANCIAL LISTING FROM {StartDate} to {FV.FDateS(Today)} ")
+            print(f"COMPANY PROFIT LISTING FROM {StartDate} to {FV.FDateS(Today)} ")
             print()
             print("TRANSACTION  TRANSACTION   TRANSACTION      DRIVER     REVENUE      HST   TOTAL       TIPS ")
             print("    ID          DATE       DESCRIPTION      NUMBER                        REVENUE")
             print("===========================================================================================")
 
-            # Set counter to 0
+            # Set counter to 0, set accumulator to 0
             TransCtr = 0
 
             # Open Revenues.dat to read
@@ -106,8 +108,8 @@ while True:
                 TransDateP = datetime.datetime.strptime(TransDate, "%Y-%m-%d")
 
                 if TransDateP.month == 12:
-                    TransID = int(CustLine[0].strip())
                     TransDate = datetime.datetime.strptime(TransDate, "%Y-%m-%d")
+                    TransID = int(CustLine[0].strip())
                     TransDescrip = CustLine[2].strip()
                     DriverNo = int(CustLine[3].strip())
                     TransAmt = float(CustLine[4].strip())
@@ -116,6 +118,7 @@ while True:
                     Tips = float(CustLine[-1].strip())
 
                     TransDescripDsp = "{:.15}".format(TransDescrip)
+
                     print(
                         f"   {TransID:>4d}       {FV.FDateS(TransDate)}   {TransDescripDsp:<15s}  {DriverNo:<4d}    {FV.FDollar2(TransAmt):>9s}  {FV.FDollar2(HST):>9s} {FV.FDollar2(Total):>7s} {FV.FDollar2(Tips):>9s}")
                     TransCtr += 1
@@ -130,6 +133,10 @@ while True:
                 break
             else:
                 print("Please enter 'END' to quit.")
+
+    def DriverFinList():
+
+        pass
 
     def TBD():
 

@@ -134,8 +134,20 @@ def EmpRevList():
         print("HAB TAXI SERVICES")
         print("PRINT A DRIVER REVENUE REPORT")
         print()
-        DriverNum = int(input("Enter the driver number: "))
+
+        while True:
+            try:
+                DriverNum = int(input("Enter the driver number: "))
+            except: print("The driver number must be a valid number. Please re-enter.")
+            else:
+                if len(str(DriverNum)) != 4:
+                    print("The driver number must be 4 digits. Please re-enter.")
+                elif DriverNum == "":
+                    print("The driver number cannot be blank. Please re-enter.")
+                else:
+                    break
         # Print out top of report
+
 
         StartDate = date(2022, 12, 0o1)
         Today = datetime.datetime.now()
@@ -360,7 +372,19 @@ while True:
     print("9. Quit Program.")
     print()
 
-    Choice = int(input("Enter your choice (1-9): "))
+    while True:
+        try:
+            Choice = int(input("Enter your choice (1-9): "))
+        except: print("The choice must be a number. Please re-enter.")
+        else:
+            if Choice == "":
+                print("The choice cannot be blank. Please re-enter.")
+            elif Choice < 1 or Choice > 9:
+                print("The choice must be between 1-9. Please re-enter.")
+            else:
+                break
+
+
 
     if Choice == 1:
 
@@ -396,13 +420,6 @@ while True:
 
     elif Choice == 9:
         break
-
-
-
-
-
-
-
 
 
 
